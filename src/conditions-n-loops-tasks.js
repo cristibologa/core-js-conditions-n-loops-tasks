@@ -67,8 +67,11 @@ function getMaxNumber(a, b, c) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
-function canQueenCaptureKing(/* queen, king */) {
-  throw new Error('Not implemented');
+function canQueenCaptureKing(queen, king) {
+  if (queen.x === king.x) return true;
+  if (queen.y === king.y) return true;
+  if (Math.abs(queen.x - king.x) === Math.abs(queen.y - king.y)) return true;
+  return false;
 }
 
 /**
@@ -246,8 +249,20 @@ function getIndexOf(str, letter) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let num1 = num;
+  if (num1 === 0 && digit === 0) {
+    return true;
+  }
+
+  while (num1 !== 0) {
+    const last = num1 % 10;
+    if (last === digit) {
+      return true;
+    }
+    num1 = (num1 - last) / 10;
+  }
+  return false;
 }
 
 /**
@@ -263,8 +278,23 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let leftSum = 0;
+  let rightSum = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    rightSum += arr[i];
+  }
+
+  for (let i = 0; i < arr.length; i += 1) {
+    rightSum -= arr[i];
+    if (leftSum === rightSum) {
+      return i;
+    }
+    leftSum += arr[i];
+  }
+
+  return -1;
 }
 
 /**
@@ -288,8 +318,51 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  let left = 0;
+  let right = size - 1;
+  let top = 0;
+  let bottom = size - 1;
+  let currentNumber = 1;
+
+  while (left <= right && top <= bottom) {
+    for (let i = left; i <= right; i += 1) {
+      matrix[top][i] = currentNumber;
+      currentNumber += 1;
+    }
+    top += 1;
+
+    for (let i = top; i <= bottom; i += 1) {
+      matrix[i][right] = currentNumber;
+      currentNumber += 1;
+    }
+    right -= 1;
+    if (top <= bottom) {
+      for (let i = right; i >= left; i -= 1) {
+        matrix[bottom][i] = currentNumber;
+        currentNumber += 1;
+      }
+      bottom -= 1;
+    }
+
+    if (left <= right) {
+      for (let i = bottom; i >= top; i -= 1) {
+        matrix[i][left] = currentNumber;
+        currentNumber += 1;
+      }
+      left += 1;
+    }
+  }
+
+  return matrix;
 }
 
 /**
@@ -307,8 +380,29 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const matrix1 = matrix;
+  const long = matrix.length;
+  for (let i = 0; i < long; i += 1) {
+    for (let j = i + 1; j < long; j += 1) {
+      const temp = matrix1[i][j];
+      matrix1[i][j] = matrix1[j][i];
+      matrix1[j][i] = temp;
+    }
+  }
+  for (let i = 0; i < long; i += 1) {
+    let left = 0;
+    let right = long - 1;
+    while (left < right) {
+      const temp = matrix1[i][left];
+      matrix1[i][left] = matrix1[i][right];
+      matrix1[i][right] = temp;
+      left += 1;
+      right -= 1;
+    }
+  }
+
+  return matrix1;
 }
 
 /**
@@ -325,8 +419,22 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const arr1 = arr;
+  for (let i = 0; i < arr1.length - 1; i += 1) {
+    let minIndex = i;
+    for (let j = i + 1; j < arr1.length; j += 1) {
+      if (arr1[j] < arr1[minIndex]) {
+        minIndex = j;
+      }
+    }
+    if (minIndex !== i) {
+      const temp = arr1[i];
+      arr1[i] = arr1[minIndex];
+      arr1[minIndex] = temp;
+    }
+  }
+  return arr1;
 }
 
 /**
